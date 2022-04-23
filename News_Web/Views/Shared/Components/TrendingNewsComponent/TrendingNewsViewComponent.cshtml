@@ -1,0 +1,67 @@
+﻿@model IEnumerable<News_Models.ViewModels.NewsForIndexViewModel>
+@using News_Web.Utilities
+@using AngleSharp.Common
+
+@if (Model.Any())
+{
+    <div class="content-wrapper">
+        <div class="most-views">
+            <span class="title">Trending News</span>
+            <div class="col-md-8">
+
+                <div class="main-post">
+                    <a asp-controller="News" asp-action="SingleNews" asp-route-NewsId="@Model.First().NewsId">
+                        <figure>
+
+                            <img src="@Model.First().Images" alt="">
+                            <figcaption style="margin-right:230px;">
+                                <span><i class="fa fa-folder-o"></i> @Model.First().CatTitle</span>
+                                <h3>@Model.First().NewsTitle</h3>
+                                <span><i class="fa fa-eye"></i> @Model.First().Visit</span>
+                            </figcaption>
+                        </figure>
+                        <div class="p-div" style="height:160px;">
+                            @if (@Model.First().ShortDesc.Length > 150)
+                            {
+                                @Html.Raw(@Model.First().ShortDesc.Substring(0,150))
+                            }
+                            else
+                            {
+                                @Html.Raw(@Model.First().ShortDesc)
+                            }
+
+                        </div>
+                    </a>
+                </div>
+
+                <a href="#">
+                </a>
+            </div>
+            <div class="col-md-4">
+                <div class="oth-posts">
+                    @{
+                        var firstObj = Model.First();
+                    }
+                    @foreach (var item in Model.Except(firstObj))
+                    {
+                        <div class="r-box">
+                            <span class="cat-span">@item.CatTitle</span>
+                            <a href="/News/SingleNews?newsId=@item.NewsId">
+                                <h5>@item.NewsTitle</h5>
+                            </a>
+                            <span><i class="fa fa-clock-o"></i> @item.CreateDate.ToGregorian()</span>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="alert alert-danger text-center"  style="height:550px;">
+        <h2>No News</h2>
+    </div>
+}

@@ -1,0 +1,40 @@
+﻿@using News_Common
+@{
+    //if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    //{
+    //    Layout = "~/Pages/Shared/_JournalistLayout.cshtml";
+    //}
+    //else
+    //{
+    //    Layout = "~/Pages/Shared/_JournalistLayout.cshtml";
+    //}
+
+    if (User.IsInRole(SD.Role_Admin))
+    {
+        Layout = "~/Pages/Shared/_AdminLayout.cshtml";
+
+    }
+    else if (User.IsInRole(SD.Role_Journalist) || User.IsInRole(SD.Role_User))
+    {
+        Layout = "~/Pages/Shared/_JournalistLayout.cshtml";
+    }
+   
+}
+
+
+<div>
+    <h2 class="text-center mt-4">Change your account settings</h2>
+    <hr />
+    <div class="row mb-5" style="margin-left:300px;">
+        <div class="col-md-3 mt-1" >
+            <partial name="_ManageNav" />
+        </div>
+        <div class="col-md-9">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

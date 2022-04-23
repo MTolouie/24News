@@ -1,0 +1,16 @@
+﻿@page
+@model News_Web.Pages.Admin.Category.DeleteModel
+@{
+    Layout = null;
+}
+<h3 class="text-center">Are you sure you want to delete @Model.CategoryDTO.CatTitle ? </h3>
+<div>
+
+    <form asp-page="Delete" method="post">
+        <input type="hidden" asp-for="CategoryDTO.CatId" />
+        <input type="hidden" asp-for="CategoryDTO.CatTitle" />
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-outline-danger btn-block" />
+        </div>
+    </form>
+</div>

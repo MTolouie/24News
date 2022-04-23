@@ -1,0 +1,35 @@
+﻿@model IEnumerable<News_Models.DTOs.CategoryDTO>
+<div class="main-header">
+    <div class="container-fluid">
+        <div class="col-md-10">
+            <div class="main-menu">
+                <ul>
+                    @if (Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <li><a asp-controller="Category" asp-action="Index" asp-route-CatId="@item.CatId">@item.CatTitle</a></li>
+
+                        }
+                    }
+                    else
+                    {
+                       
+                        <div class="alert alert-danger text-center" style="max-height:55px;margin-top:12px;">
+                            <h4>No Category Yet</h4>
+                        </div>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="social-box">
+                <ul>
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

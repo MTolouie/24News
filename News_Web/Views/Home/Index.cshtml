@@ -1,0 +1,51 @@
+﻿
+<!--Slider-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            @await Component.InvokeAsync("LastWeekBestNewsComponent")
+        </div>
+        <div class="col-md-6">
+            @await Component.InvokeAsync("SlidersComponent")
+        </div>
+        <div class="col-md-3">
+            <tgju type="market-overview"
+                  items="137203,137205,137206,137207,137225"
+                  columns="dot"
+                  token="webservice">
+            </tgju>
+        </div>
+    </div>
+</div>
+<!-- End Of Slider -->
+
+<div class="clear-fix"></div>
+<!-- Main Content -->
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                @await Component.InvokeAsync("RandomNewsCategoryComponent")
+            </div>
+            <div class="col-md-6">
+                
+                @await Component.InvokeAsync("TrendingNewsComponent")
+            </div>
+            <div class="col-md-3">
+               @await Component.InvokeAsync("AllCategoriesAndNewsCountComponent")
+            </div>
+        </div>
+    </div>
+    <div class="clear-fix"></div>
+
+    <div class="latest-posts">
+        
+        @await Component.InvokeAsync("LatestNewsComponent")
+    </div>
+</div>
+<!-- End Of Main Content-->
+@section Scripts{
+
+<script src="https://api.accessban.com/v1/widget/v2" defer></script>
+
+}

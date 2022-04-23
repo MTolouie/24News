@@ -1,0 +1,13 @@
+﻿@page
+@model News_Web.Pages.Admin.News.SendToPublishModel
+@{
+    Layout = null;
+}
+<h3 class="text-center mb-5">Are you sure ?</h3>
+<div>
+
+    <a style="float:left;width:150px;" class="btn btn-outline-danger" onclick="$('#MyModal').modal('hide');">cancel</a>
+    <a style="float:right;width:150px;" asp-page-handler="SendToPublishHandler" asp-route-NewsId="@Model.NewsDTO.NewsId" class="btn btn-outline-primary">Yes , Im Sure</a>
+
+
+</div>

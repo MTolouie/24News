@@ -1,0 +1,180 @@
+﻿@page
+@model News_Web.Pages.Journalist.News.ArchiveModel
+@{
+    Layout = "~/Pages/Shared/_JournalistLayout.cshtml";
+}
+@using News_Web.Utilities
+<div class="card-body">
+    <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <h3 class="text-center">Archived News</h3>
+                <div class="col-12 mt-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title text-center">Search In Archived News</h4>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <form class="form">
+                                    @{
+                                        var Title = ViewData["Title"] as string;
+
+                                        var FromDate = ViewData["FromDate"] as string;
+
+                                        var ToDate = ViewData["ToDate"] as string;
+
+                                        var categories = Model.Categories;
+
+                                    }
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="Name">Name</label>
+                                                <input type="text" class="form-control" value="@(Title !=null ? Title  : "")" name="Title" id="Title" placeholder="Title">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="last-name-column">Category</label>
+                                                <select style="background-color:White;" class="form-control" name="Category" aria-label="Default select example">
+
+                                                    <option class="text-center" style="background-color:White;" value=''>Select A Category</option>
+                                                    @foreach (var cat in categories)
+                                                    {
+                                                            <option class="text-center" style="background-color:White;" value="@cat.CatId">@cat.CatTitle</option>
+                                                    }
+
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="city-column">From Date</label>
+                                                <input value="@(FromDate !=null ? FromDate: "")" type="date" class="form-control text-center ml-2" name="FromDate" id="FromDate" placeholder="FromDate">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="country-floating">To Date</label>
+                                                <input value="@(ToDate !=null ? ToDate: "")" type="date" class="form-control text-center ml-2" name="ToDate" id="ToDate" placeholder="ToDate">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-12 d-flex justify-content-end">
+                                            <a class="btn btn-outline-dark btn-block   me-1 mb-1" asp-page="Archive"><i class="fas fa-eraser"></i></a>
+                                            <button type="submit" class="btn btn-outline-success btn-block  me-1 mb-1"><i class="fas fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.NewsDTO.Item1.Count() > 0)
+                {
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr class="text-center">
+                                    <td>News Image</td>
+                                    <td>News Title</td>
+                                    <td>News Category</td>
+                                    <td>News Published Date</td>
+                                    <td>Actions</td>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            @foreach (var item in Model.NewsDTO.Item1)
+                            {
+                                        <tr class="text-center">
+                                            <td>
+                                                <img src="@item.Images" class="thumbnail" width="200" height="150">
+                                            </td>
+                                            <td>
+                                        @item.NewsTitle
+                                            </td>
+                                            <td>
+                                        @foreach (var cat in Model.Categories.Where(c => c.CatId == item.CatId))
+                                        {
+                                            @cat.CatTitle
+                                        }
+                                            </td>
+                                            <td>
+                                        @item.CreateDate.ToGregorian()
+                                            </td>
+                                    @*onclick="SendToArchive(@item.NewsId)"*@
+                                            <td>
+
+                                                <a onclick="SendToArchive(@item.NewsId,'@item.UserId')" class="btn btn-outline-warning">UnArchive</a>
+
+                                            </td>
+                                        </tr>
+                            }
+
+                            </tbody>
+                        </table>
+
+                }
+                else
+                {
+                        <div class="alert alert-danger text-center">
+                            <p>No Data</p>
+                        </div>
+                }
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+
+
+                        @if (Model.NewsDTO.Item2 > 1)
+                        {
+                            @for (int i = 1; i <= Model.NewsDTO.Item2; i++)
+                            {
+                                var title = ViewData["Title"] as string;
+
+                                var category = ViewData["Category"] as string;
+                                var fromDate = ViewData["FromDate"] as string;
+
+                                var toDate = ViewData["ToDate"] as string;
+
+
+                                        <li class="page-item @(Convert.ToInt16(ViewData["PageId"]) == i ?"active" : "")"><a class="page-link" href="/Journalist/news/Archive?pageid=@i&title=@title&category=@category&fromDate=@fromDate&todate=@toDate">@i</a></li>
+                            }
+                        }
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<partial name="_Modal" />
+<button data-bs-toggle="modal" data-bs-target="#MyModal" hidden id="trigger">
+</button>
+@section scripts{
+<script src="JournalistContent/js/modal.js" defer></script>
+<script>
+
+         function SendToArchive(id,userid) {
+
+        $.get("/Journalist/News/SendToArchive?NewsId=" + id +"&userid=" + userid, function (result) {
+            $("#MyModal").modal();
+            $("#MyModalLable").html("Archive");
+            $("#MyModalBody").html(result);
+        }).then(function(){
+        $("#trigger").click();
+        });;
+
+    }
+
+
+
+</script>
+}
+
+

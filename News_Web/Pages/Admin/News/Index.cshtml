@@ -1,0 +1,162 @@
+﻿@page
+@using News_Common
+@using News_Web.Utilities
+@using News_Business.Repository.IRepository
+@inject IUserRepository _userRepostory
+@model News_Web.Pages.Admin.News.IndexModel
+@{
+}
+<div class="card-body">
+    <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <h3 class="text-center">Published News</h3>
+                <form class="form-inline mt-4 mb-4 ml-2" method="get">
+                    @{
+                        var Title = ViewData["Title"] as string;
+
+
+                        var FromDate = ViewData["FromDate"] as string;
+
+                        var ToDate = ViewData["ToDate"] as string;
+
+                        var categories = Model.Categories;
+
+                    }
+                    <div class="form-group">
+                        Name : &ensp; <input type="text" style="max-width:150px;" class="form-control" value="@(Title !=null ? Title  : "")" name="Title" id="Title" placeholder="Title">
+                    </div>
+                    <div class="form-group ml-3">
+                        Category :&ensp;<select class="form-control" name="Category" aria-label="Default select example">
+
+                            <option value=''>Select A Category</option>
+                            @foreach (var cat in categories)
+                            {
+                                <option value="@cat.CatId">@cat.CatTitle</option>
+                            }
+
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        &ensp;  FromDate :&ensp; <input value="@(FromDate !=null ? FromDate: "")" type="date" class="form-control ml-2" name="FromDate" id="FromDate" placeholder="FromDate">
+
+                    </div>
+                    <div class="form-group">
+                        &ensp; ToDate :&ensp; <input value="@(ToDate !=null ? ToDate: "")" type="date" class="form-control ml-2" name="ToDate" id="ToDate" placeholder="ToDate">
+
+                    </div>
+
+                    <a class="btn btn-outline-dark btn-block  ml-3" asp-page="Index" style="max-width:70px;"><i class="fas fa-eraser"></i></a>
+                    <button type="submit" class="btn btn-outline-success btn-block mb-2 ml-3" style="max-width:70px;"><i class="fas fa-search"></i></button>
+                </form>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr class="text-center">
+                            <td>News Image</td>
+                            <td>News Author</td>
+                            <td>News Title</td>
+                            <td>News Category</td>
+                            <td>News Published Date</td>
+                            <td>Actions</td>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.NewsDTO.Item1.Count() > 0)
+                        {
+                            @foreach (var item in Model.NewsDTO.Item1)
+                            {
+                                <tr class="text-center">
+                                    <td>
+                                        <img src="@item.Images" class="thumbnail" width="200" height="150">
+                                    </td>
+                                      <td>
+                                        @{
+                                            var user = await  _userRepostory.GetUserById(@item.UserId);
+                                        }
+                                        <div class="text-center p-3">
+                                            <img src="@user.Avatar" class="rounded-circle" width="70" height="70">
+                                        </div>
+                                        <div class="text-center">
+                                            @user.Name
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @item.NewsTitle
+                                    </td>
+                                    <td>
+                                        @foreach (var cat in Model.Categories.Where(c => c.CatId == item.CatId))
+                                        {
+                                            @cat.CatTitle
+                                        }
+                                    </td>
+                                    <td>
+                                        @item.CreateDate.ToGregorian()
+                                    </td>
+                                    @*onclick="SendToArchive(@item.NewsId)"*@
+                                    <td>
+                                        <a onclick="SendToArchive(@item.NewsId)" class="btn btn-outline-danger">Send To Archive</a>
+                                        </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+
+                            <div class="alert alert-danger text-center">
+                                <p>No Data</p>
+                            </div>
+
+                        }
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+
+
+                        @if (Model.NewsDTO.Item2 >= 1)
+                        {
+                            @for (int i = 1; i <= Model.NewsDTO.Item2; i++)
+                            {
+
+                                var title = ViewData["Title"] as string;
+
+                                var category = ViewData["Category"] as string;
+                                var fromDate = ViewData["FromDate"] as string;
+
+                                var toDate = ViewData["ToDate"] as string;
+
+
+                                <li class="page-item @(Convert.ToInt16(ViewData["PageId"]) == i ?"active" : "")"><a class="page-link" href="/admin/news?pageid=@i&title=@title&category=@category&fromDate=@fromDate&todate=@toDate">@i</a></li>
+                            }
+                        }
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<partial name="_Modal" />
+
+@section scripts{
+<script src="AdminContent/js/modal.js" defer></script>
+<script>
+
+    function SendToArchive(id) {
+
+        $.get("/Admin/News/SendToArchive?NewsId=" + id, function (result) {
+            $("#MyModal").modal();
+            $("#MyModalLable").html("Archive");
+            $("#MyModalBody").html(result);
+        });
+
+    }
+
+
+</script>
+}

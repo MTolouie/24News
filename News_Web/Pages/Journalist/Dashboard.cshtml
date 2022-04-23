@@ -1,0 +1,185 @@
+﻿@page
+@model News_Web.Pages.Journalist.DashboardModel
+@{
+    Layout = "~/Pages/Shared/_JournalistLayout.cshtml";
+}
+
+<div class="main-content container-fluid">
+    <div class="page-title">
+        <h3>Dashboard</h3>
+        <p class="text-subtitle text-muted">A good dashboard to display your statistics</p>
+    </div>
+    <section class="section">
+        <div class="row mb-2">
+            <div class="col-12 col-md-3">
+                <div class="card card-statistic">
+                    <div class="card-body p-0">
+                        <div class="d-flex flex-column">
+                            <div class='px-3 py-3 d-flex justify-content-between'>
+                                <h3 class='card-title'>Published News </h3>
+                                <div class="card-right d-flex align-items-center">
+                                    <p>@Model.PublishedNewsCount </p>
+                                </div>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="canvas1" style="height:100px !important"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="card card-statistic">
+                    <div class="card-body p-0">
+                        <div class="d-flex flex-column">
+                            <div class='px-3 py-3 d-flex justify-content-between'>
+                                <h3 class='card-title'>Archived News</h3>
+                                <div class="card-right d-flex align-items-center">
+                                    <p>@Model.ArchivedNewsCount </p>
+                                </div>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="canvas2" style="height:100px !important"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="card card-statistic">
+                    <div class="card-body p-0">
+                        <div class="d-flex flex-column">
+                            <div class='px-3 py-3 d-flex justify-content-between'>
+                                <h3 class='card-title'>Pending News</h3>
+                                <div class="card-right d-flex align-items-center">
+                                    <p>@Model.UnPublishedNewsCount </p>
+                                </div>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="canvas3" style="height:100px !important"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="card card-statistic">
+                    <div class="card-body p-0">
+                        <div class="d-flex flex-column">
+                            <div class='px-3 py-3 d-flex justify-content-between'>
+                                <h3 class='card-title'>News Visit Count</h3>
+                                <div class="card-right d-flex align-items-center">
+                                    <p>@Model.NewsViewCount</p>
+                                </div>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="canvas4" style="height:100px !important"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-heading p-1 pl-3 text-center">Top 6 Most Viewed Newses Of The Last Year</h3>
+                    </div>
+                    <div class="card-body mt-5" style="margin-left:10px;">
+                        <div class="row">
+
+                            @if (Model.DataNews.Any())
+                            {
+                                foreach (var item in Model.DataNews)
+                                {
+                                    <div class="card" style="width: 23rem;margin-left:20px;">
+                                        <img class="card-img-top" width="250" height="200" src="@item.Images" alt="Card image cap">
+                                        <div class="card-body">
+
+                                            <h2 class="card-title text-center mb-2">@item.NewsTitle</h2>
+
+
+                                            <h5 class="card-text text-center mt-3"><b>View Count : @item.Visit </b></h5>
+
+                                            <a asp-page="/Journalist/News/Details" asp-route-NewsId="@item.NewsId" class="btn btn-outline-secondary btn-block mt-3">Details</a>
+                                        </div>
+                                    </div>
+
+
+                                }
+                            }
+                            else
+                            {
+                                <div class="alert alert-danger text-center">
+                                    <h2 style="color:white;">No News</h2>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </section>
+</div>
+@{
+
+}
+@section Scripts{
+@*<script>
+
+    var ctxBar = document.getElementById("SecondBar").getContext("2d");
+    var myBar = new Chart(ctxBar, {
+    type: 'bar',
+    data: {
+    labels: (Html.Raw(ViewData["titleList"] as string))
+    datasets: [{
+    label: 'News',
+    backgroundColor: [chartColors.grey, chartColors.grey, chartColors.grey, chartColors.grey, chartColors.info, chartColors.blue, chartColors.grey],
+    data: [
+    25,
+    10,
+    30,
+    40,
+    35,
+    55,
+    15,
+    ]
+    }]
+    },
+    options: {
+    responsive: true,
+    barRoundness: 1,
+    title: {
+    display: true,
+    text: "Top News"
+    },
+    legend: {
+    display: false
+    },
+    scales: {
+    yAxes: [{
+    ticks: {
+    beginAtZero: true,
+    suggestedMax: 40 + 20,
+    padding: 10,
+    },
+    gridLines: {
+    drawBorder: false,
+    }
+    }],
+    xAxes: [{
+    gridLines: {
+    display: false,
+    drawBorder: false
+    }
+    }]
+    }
+    }
+    }); *@
+</script>
+}

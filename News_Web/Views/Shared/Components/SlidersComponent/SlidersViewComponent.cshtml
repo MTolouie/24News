@@ -1,0 +1,58 @@
+﻿@model IEnumerable<News_Models.ViewModels.NewsForIndexViewModel>
+@using News_Web.Utilities
+@using AngleSharp.Common
+
+@if (Model.Any())
+{
+    <div class="main-slider-box">
+        <div class="owl-carousel owl-theme main-slider owl-rtl owl-loaded owl-drag">
+
+
+
+            <div class="owl-stage-outer">
+                <div class="owl-stage" style="transform: translate3d(1464px, 0px, 0px); transition: all 0.25s ease 0s; width: 2928px;">
+                    @foreach (var item in Model)
+                    {
+                        
+                        <div class="owl-item cloned" style="width: 480px; margin-left: 8px;">
+                            <a style="all:unset" asp-controller="News" asp-action="SingleNews" asp-route-NewsId="@item.NewsId">
+                            <div class="item">
+                                <figure>
+                                    <img src="@item.Images" alt="@item.NewsTitle">
+                                    <figcaption class="gradient-fig"></figcaption>
+                                    <figcaption class="desc-fig">
+                                        @if(item.Visit > 0){
+                                            <span><i class="fa fa-eye"></i> @item.Visit</span>
+                                        }
+                                        <h3>@item.NewsTitle</h3>
+                                        <span><i class="fa fa-clock-o"></i> @item.CreateDate.ToGregorian()</span>
+                                        <p>
+                                            @Html.Raw(item.ShortDesc)
+                                        </p>
+                                    </figcaption>
+                                </figure>
+                            </div>
+                            </a>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+            <div class="owl-nav">
+                <button type="button" role="presentation" class="owl-prev">
+                    <span aria-label="Previous">‹</span>
+                </button>
+                <button type="button" role="presentation" class="owl-next">
+                    <span aria-label="Next">›</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+}
+else{
+     <div class="alert alert-danger text-center" style="height:500px;">
+            <h2>No News</h2>
+        </div>
+}

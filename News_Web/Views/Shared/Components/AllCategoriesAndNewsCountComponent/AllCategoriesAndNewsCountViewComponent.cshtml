@@ -1,0 +1,38 @@
+﻿@model News_Models.ViewModels.CategoriesAndNewsCountViewModel
+@using News_Web.Utilities
+@using AngleSharp.Common
+
+<div class="l-sidebar">
+    <div class="cat-sidebar">
+        <span class="title">Categories</span>
+        <div class="text-left"><i class="fa fa-folder-o"></i></div>
+        <ul>
+            @if (Model.Categories.Any())
+            {
+                foreach (var item in Model.Categories)
+                {
+                    <li>
+                        <a href="/Category/Index?CatId=@item.CatId">
+                            @item.CatTitle
+                        </a>
+                        <span style="margin-left:280px;">
+
+                            @{
+                                var NewsCount = Model.NewsCatIds.Where(c => c == item.CatId).Count();
+                            }
+
+                            @NewsCount
+
+                        </span>
+                    </li>
+                }
+            }
+            else
+            {
+                <div class="alert alert-danger text-center" style="margin-top:10px;">
+                    <h2>No Category</h2>
+                </div>
+            }
+        </ul>
+    </div>
+</div>

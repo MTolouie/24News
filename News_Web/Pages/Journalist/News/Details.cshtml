@@ -1,0 +1,80 @@
+﻿@page
+@model News_Web.Pages.Journalist.News.DetailsModel
+@{
+      Layout = "~/Pages/Shared/_JournalistLayout.cshtml";
+}
+@using News_Web.Utilities
+
+<div id="fh5co-title-box" class="text-center mt-5 mb-5">
+    <img src="@Model.NewsDTO.Images" alt="Free HTML5 by FreeHTMl5.co" class="mb-4" width="700" height="300">
+    <div class="page-title">
+        
+        <span>@Model.NewsDTO.CreateDate.ToGregorian()</span>
+        <h2>@Model.NewsDTO.NewsTitle</h2>
+    </div>
+</div>
+<div id="fh5co-single-content" class="container-fluid pb-4 pt-4 paddding">
+    <div class="container paddding">
+        <div class="row mx-0">
+            <div class="col-md-8 animate-box fadeInLeft animated-fast "   data-animate-effect="fadeInLeft">
+              @Html.Raw(Model.NewsDTO.Text)
+            </div>
+            <div class="col-md-3 mr-2 animate-box fadeInRight animated-fast shadow-lg " style="margin-left:83px;height:400px;" data-animate-effect="fadeInRight">
+                <div>
+                    <div class="fh5co_heading fh5co_heading_border_bottom py-2 mb-4">Tags</div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="fh5co_tags_all">
+                      @if(@Model.NewsDTO.Tags != null){
+                        @foreach(var item in Model.NewsDTO.Tags.Split(','))
+                        {
+                         <p class="btn btn-primary btn-sm">@item</p>
+                        }
+                    }
+                  
+                   
+                </div>
+               <div>
+                
+                    <div class="pt-3 py-2 mb-4">Journlist</div>
+                </div>
+                <div class="row pb-3 ">
+                    <div class="col-5 align-self-center">
+                        <img src="@Model.UserDTO.Avatar" alt="img" class="rounded-circle" width="170" height="170">
+                    </div>
+                    <div class="col-7 paddding mr-5 mt-5">
+                        <div class=" text-center mt-0" style="margin-left:30px;"> @Model.UserDTO.Name</div>
+                        <div class="text-center" style="margin-left:30px;">@Model.UserDTO.CreateDate.ToGregorian()</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="mt-3">
+             <a class="btn btn-outline-warning btn-block mb-2" asp-page="Update" asp-route-NewsId="@Model.NewsDTO.NewsId" asp-route-UserId="@Model.NewsDTO.UserId"> Edit</a>
+             <a class="btn btn-outline-danger btn-block" asp-page="Index"> Go Back</a>
+            </div>
+    </div>
+
+</div>
+<!-- Modal -->
+<partial name="_MessageModal" />
+
+@section scripts{
+<script src="AdminContent/js/modal.js" defer></script>
+<script>
+
+
+    
+      function SendToPublish(id,userId) {
+
+        $.get("/Admin/News/SendToPublish?NewsId=" + id, function (result) {
+            $("#MyModal").modal();
+            $("#MyModalLable").html("Publish");
+            $("#MyModalBody").html(result);
+        });
+
+    }
+
+</script>
+
+}

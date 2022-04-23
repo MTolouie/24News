@@ -1,0 +1,59 @@
+﻿@using News_Business.Repository.IRepository
+@using News_Common
+@inject IUserRepository _userRepsoitory
+@inject INewsRepository _newsRepsoitory
+<div class="sidebar-menu">
+    <ul class="menu">
+        <li class='sidebar-title'>Main Menu</li>
+        <li class="sidebar-item">
+            <a href="/journalist/Dashboard" class='sidebar-link'>
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        @{
+
+            var username = User.Identity.Name;
+            var user = _userRepsoitory.GetUserByUserName(username);
+            var UnPublishNewsNewsCount = _newsRepsoitory.GetUserUnPublishedNewsCount(user.Id);
+        }
+        <li class="sidebar-item">
+            <a class='sidebar-link' href="/journalist/News" style="cursor:pointer">
+                <i class="fas fa-newspaper"></i>
+                <span>Published News</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a class='sidebar-link' href="/journalist/News/Archive" style="cursor:pointer">
+                <i class="fas fa-newspaper"></i>
+                <span>Archived News</span>
+            </a>
+        </li>
+        @{
+
+
+            var pendingNewsdNewsCount = _newsRepsoitory.GetUserPendingNewsCount(user.Id);
+            var UnPublishedNewsCount = _newsRepsoitory.GetUserUnPublishedNewsCount(user.Id);
+        }
+        <li class="sidebar-item">
+            <a class='sidebar-link' href="/journalist/News/WaitingToBeApproved" style="cursor:pointer">
+                <i class="fas fa-newspaper"></i>
+                <span>Waiting To Be Approved News</span>
+                @if (UnPublishedNewsCount > 0)
+                {
+                    <span class="btn btn-danger  p-1" style="color:white;">@UnPublishedNewsCount</span>
+                }
+            </a>
+        </li>
+        <li class="sidebar-item ">
+            <a class='sidebar-link' href="/journalist/news/pending" style="cursor:pointer">
+                <i class="fas fa-newspaper"></i>
+                <span>Pending News</span>
+                @if (pendingNewsdNewsCount > 0)
+                {
+                    <span class="btn btn-danger  p-1" style="color:white;">@pendingNewsdNewsCount</span>
+                }
+            </a>
+        </li>
+    </ul>
+</div>

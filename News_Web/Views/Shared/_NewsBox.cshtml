@@ -1,0 +1,39 @@
+﻿@model News_Models.ViewModels.NewsForIndexViewModel
+@using News_Web.Utilities
+@using AngleSharp.Common
+
+
+    <div class="post-box" style="height:450px;">
+        <a asp-controller="News" asp-action="SingleNews" asp-route-NewsId="@Model.NewsId">
+            <figure>
+                <img src="@Model.Images" alt="">
+                <figcaption class="meta-fig">
+                    <span><i class="fa fa-clock-o"></i> @Model.CreateDate.ToGregorian()</span>&nbsp;
+                @if (Model.Visit > 0)
+                {
+                    <span><i class="fa fa-eye"></i> @Model.Visit</span>
+                }
+            </figcaption>
+                <figcaption class="view">
+                    <span>@Model.CatTitle</span>
+                </figcaption>
+            </figure>
+        </a><div class="text-p">
+            <a asp-controller="News" asp-action="SingleNews" asp-route-NewsId="@Model.NewsId">
+                <h5>@Model.NewsTitle</h5>
+                @if (Model.ShortDesc.Length > 120)
+                {
+                    @Html.Raw(Model.ShortDesc.Substring(0,120))
+                }
+                else
+                {
+                    @Html.Raw(Model.ShortDesc)
+                }
+            </a><div class="text-rigt">
+                <a href="#">
+                </a><a asp-controller="News" asp-action="SingleNews" asp-route-NewsId="@Model.NewsId">Read More ...</a>
+            </div>
+        </div>
+
+    </div>
+

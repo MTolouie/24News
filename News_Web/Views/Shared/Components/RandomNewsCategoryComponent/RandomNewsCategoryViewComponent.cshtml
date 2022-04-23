@@ -1,0 +1,44 @@
+﻿@model IEnumerable<News_Models.ViewModels.NewsForIndexViewModel>
+@using News_Web.Utilities
+@using AngleSharp.Common
+
+<div class="r-sidebar">
+    <div class="special-posts">
+
+
+        @if (Model.Any())
+        {
+            <span class="title">Random  category : @Model.First().CatTitle</span>
+
+            <br>
+            foreach (var item in Model)
+            {
+                <div class="special-box">
+                    <a asp-controller="News" asp-action="SingleNews" asp-route-NewsId="@item.NewsId">
+                        <figure>
+                            <img src="@item.Images" alt="">
+                            <figcaption class="txt">
+                                <h4>@item.NewsTitle</h4>
+                                <span><i class="fa fa-calendar-o"></i> @item.CreateDate.ToGregorian()</span>
+                                @if (item.Visit > 0)
+                                {
+                                    <span><i class="fa fa-eye"></i> @item.Visit</span>
+                                }
+                            </figcaption>
+                            <figcaption class="link"><i class="fa fa-external-link"></i></figcaption>
+                        </figure>
+                    </a>
+                </div>
+            }
+        }
+        else
+        {
+            
+                <div class="alert alert-danger text-center" style="height:500px;">
+                    <h2>No News In This Section</h2>
+                </div>
+            
+        }
+    </div>
+
+</div>

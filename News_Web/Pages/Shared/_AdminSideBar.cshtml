@@ -1,0 +1,88 @@
+﻿@using News_Business.Repository.IRepository
+@inject INewsRepository _newsRepsoitory
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-newspaper"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">24News <sup>tm</sup></div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" href="/Admin/Dashboard">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Sections
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/Admin/Category">
+            <i class="fa fa-list-alt"></i>
+            <span>Categories</span>
+        </a>
+
+    </li>
+
+    <!-- Nav Item - Utilities Collapse Menu -->
+    @{
+        var UnpublishedNewsCount = await _newsRepsoitory.GetUnPublishedNewsCount();
+    }
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+           aria-expanded="true" aria-controls="collapsePages">
+            <i class="fas fa-newspaper"></i>
+            <span>News</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+
+            <div class="bg-white py-2 collapse-inner rounded">
+
+                <a class="collapse-item" href="/Admin/News/UnPublished">Waiting To Be Publish  @if (UnpublishedNewsCount > 0)
+                {
+                    <span class='badge badge-danger badge-right'>@UnpublishedNewsCount</span>
+                }</a>
+                
+
+                <a class="collapse-item" href="/Admin/News/">Published News</a>
+                <a class="collapse-item" href="/Admin/News/Archive">Archived News</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesTwo" aria-expanded="false" aria-controls="collapsePages">
+            <i class="fas fa-user"></i>
+            <span>Users</span>
+        </a>
+        <div id="collapsePagesTwo" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Login Screens:</h6>
+                <a class="collapse-item" href="/Admin/User/">Users</a>
+                <a class="collapse-item" href="/Admin/User/DeActiveUsers">DeActivated Users</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+
+
+
+</ul>
+<!-- End of Sidebar -->

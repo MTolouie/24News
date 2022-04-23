@@ -1,0 +1,79 @@
+﻿@model News_Models.ViewModels.SingleNewsViewModel
+@using News_Web.Utilities
+<div class="single_post">
+    <div class="container-fluid">
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="post_img">
+                        <img src="@Model.News.Images" alt="@Model.News.NewsTitle" height="337" width="790">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default" style="margin-top:15px;height:337px;">
+                        <div class="panel-footer panel-primary text-center">Journalist</div>
+                        <div class="panel-body text-center" style="margin-top:5px;">
+                            <img src="@Model.Journalist.Avatar" class="img-circle" height="100" width="100">
+                        </div>
+                        <div class="panel-body text-center" style="margin-bottom:5px;">
+                            Name : @Model.Journalist.Name
+                        </div>
+                        <div style="margin-left:10px;">
+                            <div class="panel-footer  text-center">Tags</div>
+                            @foreach (var item in Model.News.Tags.Split(','))
+                            {
+                                <a asp-controller="News" asp-action="Search" asp-route-q="@item"><p class="badge" style="margin-top:15px;background-color:darkorange;">@item</p></a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="posts_meta text-center">
+                <span><i class="fa fa-eye"></i> View : @Model.News.Visit</span>
+                <span><i class="fa fa-archive"></i> @ViewData["category"]</span>
+                <span><i class="fa fa-calendar"></i> @Model.News.CreateDate.ToGregorian()</span>
+            </div>
+            <div class="post_content">
+                <h4>| @Model.News.NewsTitle</h4>
+                <p>
+                    @Html.Raw(Model.News.Text)
+                </p>
+            </div>
+            @*    <div class="comments_form">
+                <h5>دیدگاه شما </h5>
+                <form>
+                <div class="form-row">
+                <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="نام شما">
+                </div>
+                <div class="col-md-6">
+                <input type="email" class="form-control" placeholder="ایمیل">
+                </div>
+                <div class="col-md-12">
+                <textarea class="form-control" placeholder="نظر شما ..."></textarea>
+                </div>
+                <div class="col-md-12">
+                <div class="text-left">
+                <button class="btn btn-primary">ثبت نظر</button>
+                </div>
+                </div>
+                </div>
+                </form>
+                </div>*@
+            <div class="post_content text-center">
+                <a asp-action="NewsComments" asp-route-NewsId="@Model.News.NewsId">
+                    <h2>Show Comments</h2>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 main-content">
+            <div class="top-sidebar-r">
+                @await Component.InvokeAsync("LastWeekBestNewsComponent")
+            </div>
+            <br>
+            <div class="l-sidebar">
+                @await Component.InvokeAsync("RandomNewsCategoryComponent")
+            </div>
+        </div>
+    </div>
+</div>

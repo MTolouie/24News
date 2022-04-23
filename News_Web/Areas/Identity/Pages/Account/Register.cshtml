@@ -1,0 +1,72 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<hr>
+<div class="row" style="margin-left:14px;max-width:1000px;margin-bottom:50px;">
+    <div class="col-md-6">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
+            <h2 class="text-center">Create a new account</h2>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-floating ">
+                 <label asp-for="Input.Name"></label>
+                <input asp-for="Input.Name" class="form-control" autocomplete="off"  />
+               
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating" style="margin-top:10px;">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="off"/>
+                
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating"  style="margin-top:10px;">
+                 <label for="imgUp">Avatar Image</label>
+                <img id="imgUser" class="thumbnail" src="~/images/UserImages/no_photo.png" width="150" height="100" />
+                <input type="file" name="imgUp" id="imgUp" />
+               
+            </div>
+            <div class="form-floating" style="margin-top:10px;">
+                <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" class="form-control" autocomplete="off" />
+                
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-floating" style="margin-top:10px;">
+                <label asp-for="Input.ConfirmPassword"></label>
+                <input  asp-for="Input.ConfirmPassword" class="form-control" autocomplete="off" />
+                
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <input id="registerSubmit" type="submit" class="btn btn-primary btn-block" style="margin-top:10px;">
+
+        </form>
+    </div>
+  
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+
+<script>
+         function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#imgUser').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#imgUp").change(function () {
+        readURL(this);
+    });
+</script>
+}

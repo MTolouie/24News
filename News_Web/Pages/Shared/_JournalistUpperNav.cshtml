@@ -1,0 +1,91 @@
+﻿@using News_Business.Repository.IRepository
+@using News_Common
+@inject IUserRepository _userRepository
+@inject IPendingNewsRepository _pendingNewsRepository
+@inject INewsRepository _NewsRepository
+@{
+    var username = User.Identity.Name;
+    var user = _userRepository.GetUserByUserName(username);
+
+    var PendingNewsMesages = _pendingNewsRepository.GetUserPendingNews(user.Id);
+    var PendingNewsCount = _NewsRepository.GetUserPendingNewsCount(user.Id);
+    var news = await _NewsRepository.GetUserPendingNews(user.Id, 0);
+
+}
+
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav d-flex align-items-center navbar-light ms-auto">
+        @if (User.IsInRole(SD.Role_Journalist))
+        {
+            <li class="dropdown nav-icon">
+                <a href="#" data-bs-toggle="dropdown"
+               class="nav-link  dropdown-toggle nav-link-lg nav-link-user">
+                    @if (PendingNewsCount > 0)
+                    {
+                        <span class="btn btn-danger  p-1" style="color:white;">@PendingNewsCount</span>
+                    }
+                    <div class="d-lg-inline-block">
+                        <i data-feather="bell"></i>
+
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-large">
+                    <h6 class='py-2 px-4 text-center'>Notifications</h6>
+                    <hr />
+
+                    if (news.Item1.Any())
+                    {
+                    @foreach (var item in news.Item1)
+                    {
+                        <ul class="list-group rounded-none">
+                            <li class="list-group-item border-0 align-items-start">
+                                <div class="avatar bg-success me-3">
+                                    <img src="@item.Images" class="rounded-circle" height="30" width="30">
+
+                                </div>
+                                @if (PendingNewsMesages != null)
+                                {
+                                    <div class="shadow  text-center">
+                                        <h6 class='text-bold mt-2'>@item.NewsTitle</h6>
+
+                                        <p class='text-xs'>
+                                            @Html.Raw(PendingNewsMesages.Message)
+                                        </p>
+                                    </div>
+                                }
+                            </li>
+
+                        </ul>
+                    }
+                    }
+
+                    else
+                    {
+                    <div class="alert alert-danger text-center">
+                        No Messages
+                    </div>
+                    }
+
+
+                </div>
+
+
+            </li>
+        }
+
+        <li class="dropdown">
+            <a href="#" data-bs-toggle="dropdown"
+               class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                <div class="avatar me-1">
+                    <img src="@user.Avatar" alt="USer Avatar">
+                </div>
+                <div class="d-none d-md-block d-lg-inline-block">@user.Name</div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end">
+                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index"><i data-feather="user"></i> Account</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout"><i data-feather="log-out"></i> Logout</a>
+            </div>
+        </li>
+    </ul>
+</div>

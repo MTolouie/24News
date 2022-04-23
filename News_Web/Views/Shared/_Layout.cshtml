@@ -1,0 +1,147 @@
+﻿@using News_Business.Repository.IRepository
+@inject IUserRepository _userRepository
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link rel="stylesheet" href="/css/owl.theme.default.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/NewsComments.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/css/font-awesome.min.css" />
+
+    @RenderSection("Styles",false)
+</head>
+<body>
+    <div class="top-bar">
+        <div class="container-fluid">
+            <div class="col-md-6">
+                <div class="search-btn">
+                    <div class="input-group rounded" style="margin-left:440px;">
+                        <form class="form-inline" method="get" asp-controller="News" asp-action="Search">
+                            <div class="form-group">
+                                <label class="sr-only">Search</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="Search" class="sr-only">Search</label>
+                                <input type="text" class="form-control" name="q" placeholder="Search">
+                            </div>
+                            <button type="submit" class="btn btn-warning">Find</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="top-cat-box">
+                    <div class="col-md-12">
+                        <div class="menu">
+                            <ul>
+
+                                @{
+                                    var username = User.Identity.Name;
+                                    var user = _userRepository.GetUserByUserName(username);
+                                   
+                                }
+                                @if(user is not null)
+                                {
+                                    <img class="img-circle" style="margin-right:10px;"  src="@user.Avatar" width="50" height="50">
+                                }
+                                <li><a class="nav-link text-dark" href="/">Home</a></li>
+                                <li><a class="nav-link text-dark" href="/Home/AboutUs">About</a></li>
+                                <partial name="_loginPartial" />@*
+                                    <li><a href="/home/ContactUs">Contact Us</a></li>*@
+
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @await Component.InvokeAsync("TopNavComponent")
+
+    <div class="clear-fix"></div>
+    <partial name="_notifications" />
+    @RenderBody()
+
+    <div class="clear-fix"></div>
+
+
+    <div class="footer">
+        <div class="container-fluid">
+            <div class="col-md-5">
+                <div class="footer-box">
+                    <span class="title"> seo90</span>
+                    <p>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="footer-box">
+                    <span class="title">Access</span>
+                    <ul>
+                        <li><a href="#">dummy text</a></li>
+                        <li><a href="#">dummy text</a></li>
+                        <li><a href="#">dummy text</a></li>
+                        <li><a href="#">dummy text</a></li>
+                        <li><a href="#">dummy text</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="footer-box">
+                    <span class="title">content</span>
+                    <ul>
+                        <li><a href="#">dummy text</a></li>
+                        <li><a href="#">dummy text</a></li>
+                        <li><a href="#">dummy text</a></li>
+                        <li><a href="#">dummy text</a></li>
+                        <li><a href="#">dummy text</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="footer-box contact-box">
+                    <span class="title">Contact Us</span>
+                    <p><i class="fa fa-phone"></i> 09028468446</p>
+                    <p><i class="fa fa-phone"></i> 09336636892</p>
+                    <p><i class="fa fa-envelope-o"></i> info@seo90.ir</p>
+                    <p><i class="fa fa-map-marker"></i> LA </p>
+                </div>
+            </div>
+            <div class="clear-fix"></div>
+        </div>
+    </div>
+
+    <div class="end-wrapper">
+        <div class="container-fluid">
+            <div class="col-md-6">
+                <div class="copy-r">
+                    <p>© All Rights Reserved</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="creator text-left">
+                    <p>Web Design</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="bg"></div>
+
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/index.js"></script>
+    @RenderSection("Scripts",false)
+</body>
+</html>

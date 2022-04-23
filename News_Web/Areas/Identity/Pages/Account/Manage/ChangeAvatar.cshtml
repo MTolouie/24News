@@ -1,0 +1,55 @@
+﻿@page
+@using News_Common
+@model News_Web.Areas.Identity.Pages.Account.Manage.ChangeAvatarModel
+@{
+}
+
+<div class="form-floating mt-3 mb-3" style="margin-top:10px;">
+    
+    <img id="CurrentImg" class="thumbnail mt-3" src="@Model.UserDTO.Avatar" width="150" height="100" />
+    <label style=@(User.IsInRole(SD.Role_Admin) ? "" : "margin-left:150px;") for="imgUp">Current Image</label>
+
+</div>
+<div class="form-floating mt-3 mb-3" style="margin-top:10px;">
+    
+    <img id="imgUser" class="thumbnail mt-3" src="~/images/UserImages/no_photo.png" width="150" height="100" />
+    <label style=@(User.IsInRole(SD.Role_Admin) ? "" : "margin-left:150px;") for="imgUp">Choose Image</label>
+
+</div>
+
+<div class="form-floating mt-3 mb-3" style="margin-top:10px;">
+    <form enctype="multipart/form-data" method="post">
+        <input type="file" name="imgUp" id="imgUp" class="mt-5 mb-3" />
+        <input type="hidden" name="userId" value="@Model.UserDTO.Id" />
+        @if(Model.UserDTO.Avatar != "/images/UserImages/no_photo.png")
+        {
+       
+            <input type="hidden" name="CurrentAvatar"  value="@Model.UserDTO.Avatar" />
+        }
+        <input type="submit" value="Submit" style="width:300px;" class="btn btn-outline-primary btn-block mt-2" />
+    </form>
+
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+
+<script>
+         function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#imgUser').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#imgUp").change(function () {
+        readURL(this);
+    });
+</script>
+}

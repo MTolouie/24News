@@ -1,0 +1,148 @@
+﻿@using News_Business.Repository.IRepository
+@using News_Web.Utilities
+@using News_Common
+@inject IPendingNewsRepository _pendingNewsRepository
+@inject INewsRepository _NewsRepository
+@inject IUserRepository _userRepository
+@{
+
+    //var PendingNewsCount =  _NewsRepository.GetUserPendingNewsCount(user.Id);
+    var UnPublishedNewsCount = await _NewsRepository.GetUnPublishedNewsCount();
+    var UnPublishedNews = await _NewsRepository.GetAllUnPublishedNews(0);
+
+}
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+    <!-- Sidebar Toggle (Topbar) -->
+    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+        <i class="fa fa-bars"></i>
+    </button>
+
+    <!-- Topbar Search -->
+    <!-- Topbar Navbar -->
+    <ul class="navbar-nav ml-auto">
+
+        @{
+            var username = User.Identity.Name;
+            var user = _userRepository.GetUserByUserName(username);
+        }
+        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+        <li class="nav-item dropdown no-arrow d-sm-none">
+            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-search fa-fw"></i>
+            </a>
+            <!-- Dropdown - Messages -->
+
+
+            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                 aria-labelledby="searchDropdown">
+                <form class="form-inline mr-auto w-100 navbar-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control bg-light border-0 small"
+                               placeholder="Search for..." aria-label="Search"
+                               aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </li>
+        <!-- Nav Item - Alerts -->
+
+
+        <li class="nav-item dropdown no-arrow mx-1">
+            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-bell fa-fw"></i>
+                <!-- Counter - Alerts -->
+                @if (UnPublishedNewsCount > 0)
+                {
+                    <span class="badge badge-danger badge-counter">@UnPublishedNewsCount</span>
+                }
+            </a>
+            <!-- Dropdown - Alerts -->
+
+            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                 aria-labelledby="alertsDropdown">
+                <h6 class="dropdown-header">
+                    Alerts Center
+                </h6>
+               
+                    @if (UnPublishedNews != null)
+                    {
+                        foreach (var item in UnPublishedNews.Item1)
+                        {
+
+                            <a class="dropdown-item d-flex align-items-center" asp-page="/Admin/News/Details" asp-route-NewsId="@item.NewsId" asp-route-UserId="@item.UserId">
+                                <div class="mr-3">
+                                    <div class="icon-circle bg-primary">
+                                        <img src="@item.Images" class="rounded-circle" height="30" width="30">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="small text-gray-500">@item.CreateDate.ToGregorian()</div>
+                                    <span class="font-weight-bold">@item.NewsTitle</span>
+                                </div>
+                            </a>
+
+
+
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger text-center">
+                            <p>No Alert</p>
+                        </div>
+                    }
+
+                    <a class="dropdown-item text-center small text-gray-500" asp-page="/Admin/News/UnPublished">Show All UnPublished Newses</a>
+                
+              
+            </div>
+        </li>
+
+
+
+
+        <div class="topbar-divider d-none d-sm-block"></div>
+
+        <!-- Nav Item - User Information -->
+        <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@user.Name</span>
+                @if (user.Avatar == null)
+                {
+                    <img class="img-profile rounded-circle"
+                     src="/images/UserImages/no_photo.png">
+                }
+                else
+                {
+                    <img class="img-profile rounded-circle"
+                     src="@user.Avatar">
+                }
+            </a>
+            <!-- Dropdown - User Information -->
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                 aria-labelledby="userDropdown">
+                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Profile
+                </a>
+
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Logout
+                </a>
+            </div>
+        </li>
+
+    </ul>
+
+</nav>

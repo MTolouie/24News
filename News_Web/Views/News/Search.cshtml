@@ -1,0 +1,46 @@
+﻿@model Tuple<List<News_Models.ViewModels.NewsForIndexViewModel>,int>
+<div class="latest-posts">
+    <div class="container-fluid">
+        <div class="col-md-9">
+            @if (Model.Item1.Any())
+            {
+                 <div class="blog-title-span">
+                <span class="title">You Searched For @ViewData["q"]</span>
+            </div>
+            @foreach (var item in Model.Item1)
+            {
+                <div class="col-md-4">
+                    <partial name="_NewsBox" model="@item" />
+                </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-danger text-center" style="margin-top:15px;">
+                    <p>No News</p>
+                </div>
+            }
+        </div>
+        <div class="col-md-3 main-content">
+            <div class="l-sidebar">
+                @await Component.InvokeAsync("LastWeekBestNewsComponent")
+            </div>
+            <div class="l-sidebar" style="margin-top:30px;">
+                @await Component.InvokeAsync("RandomNewsCategoryComponent")
+            </div>
+        </div>
+        <div class="col-md-12 text-center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    @if (Model.Item2 > 0)
+                    {
+                        @for (int i = 1; i <= Model.Item2; i++)
+                        {
+                            <li class="page-item @(Convert.ToInt16(ViewData["PageId"]) == i ?"active" : "")"><a class="page-link" href="/News/Search?q=@(Convert.ToString(ViewData["q"]))&pageid=@i">@i</a></li>
+                        }
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

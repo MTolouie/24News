@@ -1,0 +1,83 @@
+﻿@page
+@model News_Web.Pages.Admin.Category.IndexModel
+
+<div class="card-body">
+    <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+        <div class="row">
+            <div class="col-sm-10">
+
+                <a id="BtnNewCategory" class="btn btn-outline-primary mb-2">Create</a>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <td>Category Title</td>
+                            <td>Actions</td>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                       @if(Model.categoryDTO.Count() > 0)
+                        {
+                             @foreach (var item in Model.categoryDTO)
+                        {
+                            <tr>
+                                <td>
+                                    @item.CatTitle
+                                </td>
+                                <td>
+                                    <a onclick="DeleteCategory(@item.CatId)"  class="btn btn-outline-danger">Delete</a>
+                                    <a onclick="EditCategory(@item.CatId)" class="btn btn-outline-warning">Edit</a>
+                                </td>
+                            </tr>
+                            }
+                        }
+                        else
+                        {
+                            <div class="alet alert-danger text-center">
+                                <p>No Data</p>
+                            </div>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<partial name="_Modal" />
+
+
+@section scripts{
+<script src="AdminContent/js/modal.js" defer></script>
+
+<script> 
+$("#BtnNewCategory").click(function () {
+    $.get("/admin/Category/create", function (result) {
+        $("#MyModal").modal();
+        $("#MyModalLable").html("Create");
+        $("#MyModalBody").html(result);
+    });
+});
+
+
+function EditCategory(id) {
+
+    $.get("/admin/Category/Update?CatId=" + id, function (result) {
+        $("#MyModal").modal();
+        $("#MyModalLable").html("Edit");
+        $("#MyModalBody").html(result);
+    });
+
+}
+
+function DeleteCategory(id) {
+
+    $.get("/Admin/Category/Delete?CatId=" + id, function (result) {
+        $("#MyModal").modal();
+        $("#MyModalLable").html("Delete");
+        $("#MyModalBody").html(result);
+    });
+
+}
+</script>
+}

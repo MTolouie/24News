@@ -1,0 +1,144 @@
+﻿@page
+@using News_Models.DTOs
+@model News_Web.Pages.Journalist.News.CreateModel
+@{
+    Layout = "~/Pages/Shared/_JournalistLayout.cshtml";
+}
+    <div class="col-md-12">
+        <div asp-validation-summary="All"></div>
+        <form method="post" enctype="multipart/form-data" style="width:1400px;margin-left:50px;margin-bottom:50px">
+             <input type="hidden" value="@DateTime.Now" asp-for="NewsDTO.CreateDate"/>
+             <input type="hidden" value="0" asp-for="NewsDTO.Visit"/>
+             <input type="hidden" value="@(ViewData["UserId"] as string)" asp-for="NewsDTO.UserId"/>
+            <h2>News Info</h2>
+            <hr />
+            <div class="col-md-10">
+
+                <div class="form-group">
+                    <span class="text-danger" asp-validation-for="NewsDTO.NewsTitle"></span>
+                    <label class="text-center">News Title</label>
+                    <input type="text" asp-for="NewsDTO.NewsTitle" class="form-control">
+                </div>
+                
+
+                @{
+                    List<CategoryDTO> categoryDTOs = Model.Categories as List<CategoryDTO>;
+                }
+
+                <div class="form-group">
+                    <span class="text-danger" asp-validation-for="NewsDTO.CatId"></span>
+                    <label class="text-center">Category</label>
+                    <select style="background-color:white;" class="form-control" asp-for="NewsDTO.CatId">
+                        @foreach (var item in categoryDTOs)
+                        {
+                            <option style="background-color:white;" value="@item.CatId">@item.CatTitle</option>
+                        }
+                    </select>
+                </div>
+                
+
+
+
+                <div class="form-group">
+                    <span asp-validation-for="NewsDTO.ShortDesc" class="text-danger"></span>
+                    <label class="text-center">News Short Description</label>
+                    <textarea class="form-control" asp-for="NewsDTO.ShortDesc" rows="10"></textarea>
+                </div>
+
+
+                <div class="form-group">
+                    <span asp-validation-for="NewsDTO.Text" class="text-danger"></span>
+                    <label class="text-center">News Text</label>
+                    <textarea class="form-control" asp-for="NewsDTO.Text" rows="10"></textarea>
+                </div>
+
+
+
+
+                <div class="form-group">
+                     <span class="text-danger" asp-validation-for="NewsDTO.Tags"></span>
+                    <label class="text-center">Tags</label> 
+                    <p class="help-block">Use , To Separate Words</p>
+                    <input type="text" asp-for="NewsDTO.Tags" class="form-control">
+
+                </div>
+               
+
+               
+                
+
+                <center>
+                    <div>
+                     
+                    <div class="form-group">
+                        <img id="imgNews" class="thumbnail" src="~/images/NewsImages/no_photo.png" width="500" height="300" />
+                        <label class="text-center">News Image</label>
+                        <input type="file" name="imgUp" id="imgUp">
+                    </div>
+                    
+                </div>
+                </center>
+               
+
+                <input type="submit" value="Create" class="btn btn-outline-primary btn-block" />
+            </div>
+
+            
+
+        </form>
+    </div>
+
+
+@section Scripts{
+<script>
+
+       //$("#course_GroupId").change(function () {
+       //     $("#course_SubGroup").empty();
+       //     $.getJSON("/home/GetSubGroups/" + $("#course_GroupId :selected").val(),
+       //         function (data) {
+
+       //             $.each(data,
+       //                 function () {
+       //                     $("#course_SubGroup").append('<option value=' + this.value + '>' + this.text + '</option>');
+
+       //                 });
+
+       //         });
+
+
+       // });
+
+
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#imgNews').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#imgUp").change(function () {
+        readURL(this);
+    });
+</script>
+
+
+
+<script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
+<script>
+
+    CKEDITOR.replace('NewsDTO_Text', {
+    customConfig: '/js/Config.js'
+    });
+
+    CKEDITOR.replace('NewsDTO_ShortDesc', {
+    customConfig: '/js/Config.js'
+    });
+
+</script>
+}

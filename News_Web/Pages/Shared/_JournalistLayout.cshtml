@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+@using News_Business.Repository.IRepository
+@using News_Common
+@inject INewsRepository _newsRepsoitory
+@inject IUserRepository _userRepsoitory
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journalist Dashboard</title>
+
+    <link rel="stylesheet" href="/JournalistContent/css/bootstrap.css">
+
+    <link rel="stylesheet" href="/JournalistContent/vendors/chartjs/Chart.min.css">
+    <link rel="stylesheet" href="/JournalistContent/vendors/fontawesome-free/css/all.min.css" type="text/css">
+    <link rel="stylesheet" href="/JournalistContent/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="/JournalistContent/css/app.css">
+    <link rel="shortcut icon" href="/JournalistContent/images/favicon.svg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" crossorigin="anonymous" />
+</head>
+
+<body>
+    <div id="app">
+        <div id="sidebar" class='active'>
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header">
+                    <a href="/"><img src="/images/logo.png" class="mt-3 mb-0" width="130" height="300" alt="logo" srcset=""></a>
+                </div>
+                @if (User.IsInRole(SD.Role_Journalist))
+                {
+                    <partial name="_JournalistSideNav" />
+                }
+                else
+                {
+                    <div class="alert alert-warning mt-4" style="margin-left:10px;margin-right:10px;height:550px;">
+                        <h2 class="text-center" style="margin-top:230px;">No Access</h2>
+                    </div>
+                }
+                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+            </div>
+        </div>
+        <div id="main">
+            <nav class="navbar navbar-header navbar-expand navbar-light">
+                <a class="sidebar-toggler" href="#"><span class="navbar-toggler-icon"></span></a>
+                <button class="btn navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <partial name="_JournalistUpperNav" />
+            </nav>
+
+            <partial name="_Notifications" />
+            @RenderBody()
+
+            <footer>
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p>2020 &copy; Voler</p>
+                    </div>
+                    <div class="float-end">
+                        <p>
+                            Crafted with <span class='text-danger'><i data-feather="heart"></i></span> by <a href="http://ahmadsaugi.com">Ahmad Saugi</a>
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="/JournalistContent/vendors/jquery/jquery.min.js"></script>
+    <script src="/JournalistContent/js/feather-icons/feather.min.js"></script>
+    <script src="/JournalistContent/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="/JournalistContent/js/app.js"></script>
+
+    <script src="/JournalistContent/vendors/chartjs/Chart.min.js"></script>
+    <script src="/JournalistContent/vendors/apexcharts/apexcharts.min.js"></script>
+    <script src="/JournalistContent/js/pages/dashboard.js"></script>
+
+    <script src="/JournalistContent/js/main.js"></script>
+
+
+
+    @RenderSection("Scripts", required: false)
+</body>
+
+</html>

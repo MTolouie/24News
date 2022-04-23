@@ -1,0 +1,40 @@
+﻿@page
+@model News_Web.Pages.Admin.News.DeleteModel
+@{
+    Layout = null;
+}
+<div class="col-md-12">
+    <div class="panel panel-default" style="margin-left:120px;">
+        <div class="panel-heading">
+            <h3 class="left">Are You Sure ?</h3>
+        </div>
+        <div class="panel-body">
+            <form method="post" asp-page="Delete">
+                <input type="hidden" name="NewsId" value="@Model.NewsDTO.NewsId" />
+                <input type="hidden" name="imgUp" value="@Model.NewsDTO.Images" />
+               @* <input type="hidden" name="NewsId" value="@Model.NewsDTO.Visit" />
+                <input type="hidden" name="NewsId" value="@Model.NewsDTO.NewsId" />*@
+
+                <dl class="dl-horizontal">
+                    <dt>News Image</dt>
+                    <dd><img src="@Model.NewsDTO.Images" class="thumbnail" width="200" height="150"></dd>
+                    <dt>News Title</dt>
+                    <dd>@Model.NewsDTO.NewsTitle</dd>
+                    <dt>News category</dt>
+                    <dd>    
+                        @Model.CategoryDTO.CatTitle                        
+                    </dd>
+                    <dt>Published Date </dt>
+                    <dd>@Model.NewsDTO.CreateDate</dd>
+                    <dt></dt>
+                    <dd>
+                        <input type="submit" value="Delete" class="btn btn-outline-danger" style="width:200px;" />
+                        <a asp-page="Archive" class="btn btn-outline-info" style="width:200px;margin-top:10px" />Cancel</a>
+                    </dd>
+                </dl>
+            </form>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>

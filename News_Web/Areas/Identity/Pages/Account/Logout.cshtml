@@ -1,0 +1,30 @@
+﻿@page
+@{
+    ViewData["Title"] = "Log out";
+}
+@inject SignInManager<IdentityUser> _signInManager;
+@using News_Common
+
+<header>
+
+    <div class="single_post" style="margin-bottom:50px;margin-top:50px;">
+        <div class="container-fluid">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="post_content not_found text-center">
+                    <span>Loging Out</span>
+                    <p>You Logged Out</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+@functions {
+    public async Task OnGet()
+    {
+        await _signInManager.SignOutAsync();
+        TempData[SD.Success] = "Logout Successful";
+        HttpContext.Response.Redirect("/Identity/Account/Login");
+    }
+}

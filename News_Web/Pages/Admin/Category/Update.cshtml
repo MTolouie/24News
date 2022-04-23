@@ -1,0 +1,26 @@
+﻿@page
+@model News_Web.Pages.Admin.Category.UpdateModel
+@{
+}
+@{
+    Layout = null;
+}
+<div class="form-horizontal">
+    <form asp-page="Update" method="post">
+        <input type="hidden" asp-for="categoryDTO.CatId" />
+        <div class="form-group">
+            <label asp-for="categoryDTO.CatTitle" class="ml-3"></label>
+            <div class="col-md-10">
+                <input asp-for="categoryDTO.CatTitle" class="form-control" />
+                <span asp-validation-for="categoryDTO.CatTitle"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Update" class="btn btn-outline-warning btn-block" />
+            </div>
+            
+        </div>
+    </form>
+</div>
